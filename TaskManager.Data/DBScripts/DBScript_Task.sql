@@ -2,78 +2,7 @@ USE [master]
 GO
 /****** Object:  Database [ProjectManager]    Script Date: 03-10-2018 20:19:28 ******/
 CREATE DATABASE [ProjectManager]
- CONTAINMENT = NONE
- ON  PRIMARY 
-( NAME = N'ProjectManager', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\ProjectManager.mdf' , SIZE = 5120KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
- LOG ON 
-( NAME = N'ProjectManager_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\ProjectManager_log.ldf' , SIZE = 2048KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
-GO
-ALTER DATABASE [ProjectManager] SET COMPATIBILITY_LEVEL = 110
-GO
-IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
-begin
-EXEC [ProjectManager].[dbo].[sp_fulltext_database] @action = 'enable'
-end
-GO
-ALTER DATABASE [ProjectManager] SET ANSI_NULL_DEFAULT OFF 
-GO
-ALTER DATABASE [ProjectManager] SET ANSI_NULLS OFF 
-GO
-ALTER DATABASE [ProjectManager] SET ANSI_PADDING OFF 
-GO
-ALTER DATABASE [ProjectManager] SET ANSI_WARNINGS OFF 
-GO
-ALTER DATABASE [ProjectManager] SET ARITHABORT OFF 
-GO
-ALTER DATABASE [ProjectManager] SET AUTO_CLOSE OFF 
-GO
-ALTER DATABASE [ProjectManager] SET AUTO_CREATE_STATISTICS ON 
-GO
-ALTER DATABASE [ProjectManager] SET AUTO_SHRINK OFF 
-GO
-ALTER DATABASE [ProjectManager] SET AUTO_UPDATE_STATISTICS ON 
-GO
-ALTER DATABASE [ProjectManager] SET CURSOR_CLOSE_ON_COMMIT OFF 
-GO
-ALTER DATABASE [ProjectManager] SET CURSOR_DEFAULT  GLOBAL 
-GO
-ALTER DATABASE [ProjectManager] SET CONCAT_NULL_YIELDS_NULL OFF 
-GO
-ALTER DATABASE [ProjectManager] SET NUMERIC_ROUNDABORT OFF 
-GO
-ALTER DATABASE [ProjectManager] SET QUOTED_IDENTIFIER OFF 
-GO
-ALTER DATABASE [ProjectManager] SET RECURSIVE_TRIGGERS OFF 
-GO
-ALTER DATABASE [ProjectManager] SET  DISABLE_BROKER 
-GO
-ALTER DATABASE [ProjectManager] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
-GO
-ALTER DATABASE [ProjectManager] SET DATE_CORRELATION_OPTIMIZATION OFF 
-GO
-ALTER DATABASE [ProjectManager] SET TRUSTWORTHY OFF 
-GO
-ALTER DATABASE [ProjectManager] SET ALLOW_SNAPSHOT_ISOLATION OFF 
-GO
-ALTER DATABASE [ProjectManager] SET PARAMETERIZATION SIMPLE 
-GO
-ALTER DATABASE [ProjectManager] SET READ_COMMITTED_SNAPSHOT OFF 
-GO
-ALTER DATABASE [ProjectManager] SET HONOR_BROKER_PRIORITY OFF 
-GO
-ALTER DATABASE [ProjectManager] SET RECOVERY FULL 
-GO
-ALTER DATABASE [ProjectManager] SET  MULTI_USER 
-GO
-ALTER DATABASE [ProjectManager] SET PAGE_VERIFY CHECKSUM  
-GO
-ALTER DATABASE [ProjectManager] SET DB_CHAINING OFF 
-GO
-ALTER DATABASE [ProjectManager] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
-GO
-ALTER DATABASE [ProjectManager] SET TARGET_RECOVERY_TIME = 0 SECONDS 
-GO
-EXEC sys.sp_db_vardecimal_storage_format N'ProjectManager', N'ON'
+
 GO
 USE [ProjectManager]
 GO
@@ -188,7 +117,29 @@ REFERENCES [dbo].[Task] ([Task_ID])
 GO
 ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_Task]
 GO
-USE [master]
+
+		     
+		     
+USE [ProjectManager]
 GO
-ALTER DATABASE [ProjectManager] SET  READ_WRITE 
-GO
+SET IDENTITY_INSERT [dbo].[ParentTask] ON 
+
+INSERT [dbo].[ParentTask] ([Parent_ID], [Parent_Task]) VALUES (1, N'Design')
+INSERT [dbo].[ParentTask] ([Parent_ID], [Parent_Task]) VALUES (2, N'Coding')
+INSERT [dbo].[ParentTask] ([Parent_ID], [Parent_Task]) VALUES (3, N'UnitTest')
+INSERT [dbo].[ParentTask] ([Parent_ID], [Parent_Task]) VALUES (4, N'Deployment')
+SET IDENTITY_INSERT [dbo].[ParentTask] OFF
+SET IDENTITY_INSERT [dbo].[Project] ON 
+
+INSERT [dbo].[Project] ([Project_ID], [Project], [Start_Date], [End_Date], [Priority], [Status], [Manager_ID]) VALUES (1, N'PROJECT TEST 2', CAST(N'2018-10-15 17:12:06.000' AS DateTime), CAST(N'2018-12-15 17:12:07.000' AS DateTime), 25, 1, NULL)
+SET IDENTITY_INSERT [dbo].[Project] OFF
+SET IDENTITY_INSERT [dbo].[Task] ON 
+
+INSERT [dbo].[Task] ([Task_ID], [Parent_ID], [Project_ID], [Task], [Start_Date], [End_Date], [Priority], [Status]) VALUES (3, 2, 1, N'Task from Test', CAST(N'2018-10-15 17:29:13.000' AS DateTime), CAST(N'2018-10-15 17:29:13.000' AS DateTime), 30, 1)
+SET IDENTITY_INSERT [dbo].[Task] OFF
+SET IDENTITY_INSERT [dbo].[User] ON 
+
+INSERT [dbo].[User] ([User_ID], [Employee_ID], [First_Name], [Last_Name], [Project_ID], [Task_ID], [IsActive]) VALUES (1, N'EMP0004', N'Test FName', N'Test LName', NULL, NULL, 1)
+SET IDENTITY_INSERT [dbo].[User] OFF
+
+
